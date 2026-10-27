@@ -1,13 +1,42 @@
+
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
   slug: 'users',
+
+  auth: true,
+
   admin: {
     useAsTitle: 'email',
+    defaultColumns: ['email', 'role'],
   },
-  auth: true,
+
+  access: {
+    read: ({ req }) => req.user?.role === 'admin',
+    create: ({ req }) => req.user?.role === 'admin',
+    update: ({ req }) => req.user?.role === 'admin',
+    delete: ({ req }) => req.user?.role === 'admin',
+  },
+
   fields: [
-    // Email added by default
-    // Add more fields as needed
+    {
+      name: 'role',
+      type: 'select',
+      required: true,
+      defaultValue: 'editor',
+      options: [
+        {
+          label: 'Admin',
+          value: 'admin',
+        },
+        {
+          label: 'Editor',
+          value: 'editor',
+        },
+      ],
+      access: {
+        update: ({ req }) => req.user?.role === 'admin',
+      },
+    },
   ],
 }

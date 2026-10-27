@@ -39,8 +39,11 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+/backend-api/.env
+/backend-api/dist/
 
 /media
+/.data/mongodb/
 
 # Playwright
 node_modules/
