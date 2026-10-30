@@ -1,5 +1,6 @@
 
 import type { CollectionConfig } from 'payload'
+import { twoColumnRow } from '../lib/twoColumnRow'
 import { readPublished } from '../access/readPublished'
 
 export const Posts: CollectionConfig = {
@@ -7,8 +8,9 @@ export const Posts: CollectionConfig = {
 
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'author', 'status', 'publishedAt'],
+    defaultColumns: ['status', 'title', 'author', 'publishedAt'],
     group: 'Superhero Content',
+    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
   },
 
     access: {
@@ -28,11 +30,17 @@ export const Posts: CollectionConfig = {
     },
 
   fields: [
-    {
-      name: 'title',
-      type: 'text',
-      required: true,
-    },
+    twoColumnRow(
+      { name: 'title', type: 'text', required: true },
+      {
+        name: 'status', type: 'select', required: true, defaultValue: 'draft',
+        admin: { hidden: true },
+        options: [
+          { label: 'Draft', value: 'draft' },
+          { label: 'Published', value: 'published' },
+        ],
+      },
+    ),
     {
       name: 'slug',
       type: 'text',
@@ -87,16 +95,6 @@ export const Posts: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
     },
   ],
 }

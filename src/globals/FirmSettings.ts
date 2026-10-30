@@ -60,15 +60,5 @@ export const FirmSettings: GlobalConfig = {
         },
       ],
     },
-    {
-      name: 'consultationLabel',
-      type: 'text',
-      defaultValue: 'Request hero support',
-    },
-    {
-      name: 'consultationUrl',
-      type: 'text',
-      defaultValue: '/contact',
-    },
   ],
 }

@@ -2,23 +2,18 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getPayloadClient } from '@/lib/payload'
 import PageBuilder from '@/components/PageBuilder'
+import type { Metadata } from 'next'
+import { getPublicPageByType, pageMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getPublicPageByType('insights'), '/insights', 'Superhero HQ insights', 'Updates, rescue reports, and community stories from our hero network.')
+}
+
 export default async function InsightsPage() {
   const payload = await getPayloadClient()
-  const pageResult = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        { pageType: { equals: 'insights' } },
-        { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-      ],
-    },
-    limit: 1,
-    depth: 1,
-  })
-  const page = pageResult.docs[0]
+  const page = await getPublicPageByType('insights')
   if (page?.layout?.length) return <main><PageBuilder blocks={page.layout} /></main>
 
   const result = await payload.find({

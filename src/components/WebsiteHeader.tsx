@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
 import { siteBrand, supportLabel } from '@/lib/siteContent'
@@ -5,6 +6,8 @@ import { siteBrand, supportLabel } from '@/lib/siteContent'
 export default async function WebsiteHeader() {
   const payload = await getPayloadClient()
   const header = await payload.findGlobal({ slug: 'header', depth: 1 })
+  const uploadedLogo = typeof header.logo === 'object' && header.logo ? header.logo : null
+  const logoSrc = uploadedLogo?.url || (uploadedLogo?.filename ? `/api/media/file/${encodeURIComponent(uploadedLogo.filename)}` : null)
   const configuredLinks = header.navigation?.length ? header.navigation : [
     { id: 'services', label: 'Services', url: '/services', openInNewTab: false },
     { id: 'team', label: 'Superheroes', url: '/superheroes', openInNewTab: false },
@@ -64,7 +67,21 @@ export default async function WebsiteHeader() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link href="/" className="brand"><span className="brand-mark" aria-hidden="true">✳</span>{siteBrand(header.logoText)}</Link>
+        <Link href="/" className="brand">
+          {logoSrc ? (
+            <span className="brand-logo-wrap">
+              <Image
+                className="brand-logo"
+                src={logoSrc}
+                alt={uploadedLogo?.alt || siteBrand(header.logoText)}
+                fill
+                sizes="170px"
+              />
+            </span>
+          ) : (
+            <><span className="brand-mark" aria-hidden="true">✳</span>{siteBrand(header.logoText)}</>
+          )}
+        </Link>
         <nav className="header-nav" aria-label="Main navigation">
           {links.map((item) => <Link key={item.id ?? item.url} href={item.url} target={item.openInNewTab ? '_blank' : undefined} rel={item.openInNewTab ? 'noopener noreferrer' : undefined}>{item.label}</Link>)}
         </nav>

@@ -4,7 +4,7 @@ export function siteBrand(value?: string | null) {
 
 export function supportLabel(value?: string | null) {
   return !value || /consultation|let.?s talk|talk to our team/i.test(value)
-    ? 'Request hero support'
+    ? 'Contact us'
     : value
 }
 

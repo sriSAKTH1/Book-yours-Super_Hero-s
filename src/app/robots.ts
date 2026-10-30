@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next'
+import { getPublicSiteURL } from '@/lib/seo'
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'
+  const siteURL = getPublicSiteURL()
 
   return {
     rules: {
@@ -9,6 +10,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin', '/api'],
     },
-    sitemap: new URL('/sitemap.xml', siteUrl).toString(),
+    ...(siteURL ? { sitemap: new URL('/sitemap.xml', siteURL).toString() } : {}),
   }
 }

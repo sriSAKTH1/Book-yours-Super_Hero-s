@@ -20,4 +20,41 @@ body.global-not-found-body>.site-header,body.global-not-found-body>.site-footer{
 .faq-item[open] .faq-toggle{transform:rotate(45deg)}
 .faq-answer{max-width:650px;padding:0 40px 20px 0;color:var(--muted);font-size:14px;line-height:1.75}
 .faq-answer p{margin:0 0 10px}
+
+/* Superhero HQ error page */
+.error-page{min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:60px 24px;background:radial-gradient(ellipse at 50% 38%,rgba(37,99,235,.13),transparent 45%),#0b1220;color:#fff}
+.error-content{position:relative;z-index:2;width:100%;max-width:650px;text-align:center;animation:content-enter .9s ease both}
+.error-emblem{position:relative;display:grid;place-items:center;width:100px;height:100px;margin:0 auto 35px;animation:emblem-float 4s ease-in-out infinite}
+.emblem-ring{position:absolute;inset:0;border:1px solid rgba(232,184,74,.55);border-radius:30px;transform:rotate(45deg);animation:ring-glow 3s ease-in-out infinite}
+.emblem-icon{color:#e8b84a;font-size:42px;text-shadow:0 0 30px rgba(232,184,74,.65)}
+.error-eyebrow{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px;color:#e8b84a;font-size:11px;font-weight:700;letter-spacing:3px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#f59e0b;animation:status-pulse 1.5s infinite}
+.error-content h1{margin:0;font-size:clamp(42px,7vw,76px);font-weight:800;line-height:1.06;letter-spacing:-3px}
+.error-content h1 span{color:#e8b84a}
+.error-description{max-width:480px;margin:25px auto;color:#aab5c7;font-size:16px;line-height:1.8}
+.error-code{display:inline-flex;align-items:center;gap:12px;padding:10px 16px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.04);font-size:10px;letter-spacing:1.5px}
+.error-code span{color:#8491a5}
+.error-code strong{color:#e8b84a}
+.error-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin-top:35px}
+.retry-button,.home-button{display:inline-flex;min-height:50px;align-items:center;justify-content:center;gap:10px;padding:0 24px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:transform .25s,background .25s,box-shadow .25s}
+.retry-button{border:0;background:#e8b84a;color:#101827}
+.retry-button:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 10px 30px rgba(232,184,74,.2)}
+.retry-button:disabled{opacity:.7;cursor:wait}
+.retry-button>span{font-size:20px}
+.retry-spinner{animation:spin 1s linear infinite}
+.home-button{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);color:#fff}
+.home-button:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
+.home-button span{color:#e8b84a}
+.error-footer{margin-top:65px;color:#748198;font-size:12px}
+.error-footer span{margin-right:7px;color:#e8b84a}
+.error-particles{position:absolute;inset:0;pointer-events:none}
+.error-particles span{position:absolute;width:3px;height:3px;border-radius:50%;background:#e8b84a;opacity:0;animation-name:particle-float;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes content-enter{from{opacity:0;transform:translateY(35px)}to{opacity:1;transform:translateY(0)}}
+@keyframes emblem-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes ring-glow{0%,100%{box-shadow:0 0 10px rgba(232,184,74,.1)}50%{box-shadow:0 0 35px rgba(232,184,74,.3)}}
+@keyframes status-pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.6)}50%{box-shadow:0 0 0 7px rgba(245,158,11,0)}}
+@keyframes particle-float{0%{opacity:0;transform:translateY(30px)}20%{opacity:.7}80%{opacity:.5}100%{opacity:0;transform:translateY(-120px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:600px){.error-content h1{letter-spacing:-1.5px}.error-description{font-size:14px}.error-actions{flex-direction:column}.retry-button,.home-button{width:100%;max-width:280px}.error-footer{margin-top:45px}}
+@media(prefers-reduced-motion:reduce){.error-content,.error-emblem,.emblem-ring,.status-dot,.error-particles span{animation:none!important}.retry-button,.home-button{transition:none}}
 @media(max-width:760px){.faq-section{grid-template-columns:1fr;gap:22px}}

@@ -2,23 +2,18 @@ import Link from 'next/link'
 import PageBuilder from '@/components/PageBuilder'
 import { getPayloadClient } from '@/lib/payload'
 import { servicePresentation } from '@/lib/siteContent'
+import type { Metadata } from 'next'
+import { getPublicPageByType, pageMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getPublicPageByType('services'), '/services', 'Hero services', 'Explore rescue, protection, and recovery services from Superhero HQ.')
+}
+
 export default async function ServicesPage() {
   const payload = await getPayloadClient()
-  const pageResult = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        { pageType: { equals: 'services' } },
-        { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-      ],
-    },
-    limit: 1,
-    depth: 1,
-  })
-  const page = pageResult.docs[0]
+  const page = await getPublicPageByType('services')
   if (page?.layout?.length) return <main><PageBuilder blocks={page.layout} /></main>
 
   const result = await payload.find({

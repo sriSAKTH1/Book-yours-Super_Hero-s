@@ -1,10 +1,12 @@
 import type { MetadataRoute } from 'next'
 import { getPayloadClient } from '@/lib/payload'
+import { getPublicSiteURL } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'
+  const siteURL = getPublicSiteURL()
+  if (!siteURL) return []
   const payload = await getPayloadClient()
 
   const [services, developers, posts] = await Promise.all([
@@ -28,29 +30,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }),
   ])
 
-  const staticRoutes = ['', '/services', '/superheroes', '/about', '/insights', '/contact']
+  const staticRoutes = ['', '/services', '/superheroes', '/about', '/insights', '/contact', '/content']
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
-    url: new URL(route, siteUrl).toString(),
+    url: new URL(route, siteURL).toString(),
     changeFrequency: 'weekly',
     priority: route === '' ? 1 : 0.7,
   }))
 
   const serviceEntries: MetadataRoute.Sitemap = services.docs.map((service) => ({
-    url: new URL(`/services/${encodeURIComponent(service.slug)}`, siteUrl).toString(),
+    url: new URL(`/services/${encodeURIComponent(service.slug)}`, siteURL).toString(),
     lastModified: service.updatedAt,
     changeFrequency: 'monthly',
     priority: 0.6,
   }))
 
   const developerEntries: MetadataRoute.Sitemap = developers.docs.map((developer) => ({
-    url: new URL(`/superheroes/${encodeURIComponent(developer.slug)}`, siteUrl).toString(),
+    url: new URL(`/superheroes/${encodeURIComponent(developer.slug)}`, siteURL).toString(),
     lastModified: developer.updatedAt,
     changeFrequency: 'monthly',
     priority: 0.5,
   }))
 
   const postEntries: MetadataRoute.Sitemap = posts.docs.map((post) => ({
-    url: new URL(`/insights/${encodeURIComponent(post.slug)}`, siteUrl).toString(),
+    url: new URL(`/insights/${encodeURIComponent(post.slug)}`, siteURL).toString(),
     lastModified: post.updatedAt,
     changeFrequency: 'monthly',
     priority: 0.6,

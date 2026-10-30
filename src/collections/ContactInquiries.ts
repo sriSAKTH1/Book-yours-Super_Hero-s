@@ -1,13 +1,15 @@
 
 import type { CollectionConfig } from 'payload'
+import { twoColumnRow } from '../lib/twoColumnRow'
 
 export const ContactInquiries: CollectionConfig = {
   slug: 'contact-inquiries',
 
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'email', 'status', 'createdAt'],
-    group: 'Inquiries',
+    defaultColumns: ['status', 'name', 'email', 'createdAt'],
+    group: false,
+    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
   },
 
   access: {
@@ -18,11 +20,18 @@ export const ContactInquiries: CollectionConfig = {
   },
 
   fields: [
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-    },
+    twoColumnRow(
+      { name: 'name', type: 'text', required: true },
+      {
+        name: 'status', type: 'select', required: true, defaultValue: 'new',
+        admin: { hidden: true },
+        options: [
+          { label: 'New', value: 'new' },
+          { label: 'In Progress', value: 'in-progress' },
+          { label: 'Resolved', value: 'resolved' },
+        ],
+      },
+    ),
     {
       name: 'email',
       type: 'email',
@@ -41,17 +50,6 @@ export const ContactInquiries: CollectionConfig = {
       name: 'message',
       type: 'textarea',
       required: true,
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'new',
-      options: [
-        { label: 'New', value: 'new' },
-        { label: 'In Progress', value: 'in-progress' },
-        { label: 'Resolved', value: 'resolved' },
-      ],
     },
     {
       name: 'internalNotes',

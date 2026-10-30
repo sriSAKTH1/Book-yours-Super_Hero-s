@@ -2,7 +2,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { getPayloadClient } from '@/lib/payload'
+import type { Metadata } from 'next'
+import { getPublishedPost, postMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,20 +11,14 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  return postMetadata(await getPublishedPost(slug), `/insights/${encodeURIComponent(slug)}`)
+}
+
 export default async function InsightArticlePage({ params }: Props) {
   const { slug } = await params
-  const payload = await getPayloadClient()
-
-  const result = await payload.find({
-    collection: 'posts',
-    where: {
-      and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }],
-    },
-    limit: 1,
-    depth: 2,
-  })
-
-  const post = result.docs[0]
+  const post = await getPublishedPost(slug)
 
   if (!post) {
     notFound()

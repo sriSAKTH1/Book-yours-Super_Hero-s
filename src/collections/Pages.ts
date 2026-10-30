@@ -14,8 +14,8 @@ export const Pages: CollectionConfig = {
 
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
-    group: 'Superhero Content',
+    defaultColumns: ['_status', 'title', 'slug', 'updatedAt'],
+    ///group: 'Superhero Content',
   },
 
   access: {
@@ -101,20 +101,6 @@ export const Pages: CollectionConfig = {
         ServicesBlock,
         SuperheroesBlock,
         CallToActionBlock,
-      ],
-    },
-    {
-      name: 'seo',
-      type: 'group',
-      fields: [
-        {
-          name: 'metaTitle',
-          type: 'text',
-        },
-        {
-          name: 'metaDescription',
-          type: 'textarea',
-        },
       ],
     },
     {

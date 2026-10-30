@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      {
+        pathname: '/superhero-hq-team-emblem.png',
+      },
     ],
   },
   webpack: (webpackConfig) => {

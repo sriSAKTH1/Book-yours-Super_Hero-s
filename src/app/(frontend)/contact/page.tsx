@@ -1,27 +1,32 @@
-import ContactForm from '@/components/ContactForm'
-import ConsultationForm from '@/components/ConsultationForm'
+import type { Metadata } from 'next'
+import FormBuilderTest from '@/components/FormBuilderTest'
 import PageBuilder from '@/components/PageBuilder'
 import { getPayloadClient } from '@/lib/payload'
+import { getPublicPageBySlug, pageMetadata } from '@/lib/seo'
+import type { Form } from '@/payload-types'
 
 export const dynamic = 'force-dynamic'
 
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata(await getPublicPageBySlug('contact'), '/contact', 'Contact Superhero HQ', 'Contact our team about service requests, partnerships, and community support.')
+}
+
 export default async function ContactPage() {
   const payload = await getPayloadClient()
-  const [settings, contactPages] = await Promise.all([
+  const [settings, contactPage, contactFormResult] = await Promise.all([
     payload.findGlobal({ slug: 'firm-settings' }),
+    getPublicPageBySlug('contact'),
     payload.find({
-      collection: 'pages',
-      where: {
-        and: [
-          { slug: { equals: 'contact' } },
-          { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-        ],
-      },
+      collection: 'forms',
+      where: { title: { equals: 'Contact Us Test' } },
       limit: 1,
       depth: 0,
+    }).catch((error) => {
+      console.error('Could not load the saved contact form:', error)
+      return null
     }),
   ])
-  const contactPage = contactPages.docs[0]
+  const contactForm = contactFormResult?.docs[0] as Form | undefined
 
   return (
     <main>
@@ -35,20 +40,13 @@ export default async function ContactPage() {
           {settings.officeAddress && <p className="contact-address">{settings.officeAddress}</p>}
         </div>
         <section className="contact-card">
-          <h2>{contactPage?.title || 'Contact Superhero HQ'}</h2>
+          <h2>Send us a message</h2>
           <p className="contact-card-copy">Required fields are marked with an asterisk.</p>
-          <ContactForm />
-        </section>
-      </section>
-
-      <section className="consultation-section">
-        <div className="consultation-heading">
-          <p className="eyebrow eyebrow-dark">Plan community support</p>
-          <h2>Request hero support.</h2>
-          <p>Tell us what your neighborhood needs and how our team can help.</p>
-        </div>
-        <section className="contact-card consultation-card">
-          <ConsultationForm />
+          {contactForm ? (
+            <FormBuilderTest form={contactForm} />
+          ) : (
+            <p role="alert" className="form-error">The contact form is unavailable right now. Please try again later.</p>
+          )}
         </section>
       </section>
 

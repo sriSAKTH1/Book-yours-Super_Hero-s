@@ -1,13 +1,15 @@
 
 import type { CollectionConfig } from 'payload'
+import { twoColumnRow } from '../lib/twoColumnRow'
 
 export const NewsletterSubscribers: CollectionConfig = {
   slug: 'newsletter-subscribers',
 
   admin: {
     useAsTitle: 'email',
-    defaultColumns: ['email', 'status', 'subscribedAt'],
+    defaultColumns: ['status', 'email', 'subscribedAt'],
     group: 'Inquiries',
+    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
   },
 
   access: {
@@ -18,24 +20,18 @@ export const NewsletterSubscribers: CollectionConfig = {
   },
 
   fields: [
-    {
-      name: 'email',
-      type: 'email',
-      required: true,
-      unique: true,
-      index: true,
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'pending',
-      options: [
-        { label: 'Pending Confirmation', value: 'pending' },
-        { label: 'Subscribed', value: 'subscribed' },
-        { label: 'Unsubscribed', value: 'unsubscribed' },
-      ],
-    },
+    twoColumnRow(
+      { name: 'email', type: 'email', required: true, unique: true, index: true },
+      {
+        name: 'status', type: 'select', required: true, defaultValue: 'pending',
+        admin: { hidden: true },
+        options: [
+          { label: 'Pending Confirmation', value: 'pending' },
+          { label: 'Subscribed', value: 'subscribed' },
+          { label: 'Unsubscribed', value: 'unsubscribed' },
+        ],
+      },
+    ),
     {
       name: 'subscribedAt',
       type: 'date',

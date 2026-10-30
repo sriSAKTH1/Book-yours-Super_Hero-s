@@ -1,8 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { getPayloadClient } from '@/lib/payload'
+import type { Metadata } from 'next'
+import { createDocumentMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = createDocumentMetadata({
+  fallbackTitle: 'Superhero HQ content',
+  fallbackDescription: 'Browse updates, rescue reports, and practical stories from our hero network.',
+  pathname: '/content',
+})
 
 export default async function ContentPage() {
   const payload = await getPayloadClient()

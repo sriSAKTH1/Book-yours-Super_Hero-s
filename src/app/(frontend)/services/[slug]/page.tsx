@@ -2,8 +2,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { getPayloadClient } from '@/lib/payload'
 import { servicePresentation } from '@/lib/siteContent'
+import type { Metadata } from 'next'
+import { getPublishedService, serviceMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,20 +12,15 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const service = await getPublishedService(slug)
+  return serviceMetadata(service, `/services/${encodeURIComponent(slug)}`)
+}
+
 export default async function ServiceDetailsPage({ params }: Props) {
   const { slug } = await params
-  const payload = await getPayloadClient()
-
-  const result = await payload.find({
-    collection: 'services',
-    where: {
-      and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }],
-    },
-    limit: 1,
-    depth: 2,
-  })
-
-  const service = result.docs[0]
+  const service = await getPublishedService(slug)
 
   if (!service) {
     notFound()
@@ -73,7 +69,7 @@ export default async function ServiceDetailsPage({ params }: Props) {
             </p>
           </div>
           <Link href="/contact" className="button button-dark">
-            Request hero support <span aria-hidden="true">↗</span>
+            Contact us <span aria-hidden="true">↗</span>
           </Link>
         </aside>
       </section>

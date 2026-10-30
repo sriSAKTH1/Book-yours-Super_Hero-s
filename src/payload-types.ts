@@ -85,6 +85,9 @@ export interface Config {
     'contact-inquiries': ContactInquiry;
     'consultation-requests': ConsultationRequest;
     'newsletter-subscribers': NewsletterSubscriber;
+    forms: Form;
+    'form-submissions': FormSubmission;
+    search: Search;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -101,6 +104,9 @@ export interface Config {
     'contact-inquiries': ContactInquiriesSelect<false> | ContactInquiriesSelect<true>;
     'consultation-requests': ConsultationRequestsSelect<false> | ConsultationRequestsSelect<true>;
     'newsletter-subscribers': NewsletterSubscribersSelect<false> | NewsletterSubscribersSelect<true>;
+    forms: FormsSelect<false> | FormsSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
+    search: SearchSelect<false> | SearchSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -114,13 +120,11 @@ export interface Config {
     header: Header;
     footer: Footer;
     'firm-settings': FirmSetting;
-    'site-design': SiteDesign;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
     'firm-settings': FirmSettingsSelect<false> | FirmSettingsSelect<true>;
-    'site-design': SiteDesignSelect<false> | SiteDesignSelect<true>;
   };
   locale: null;
   widgets: {
@@ -239,8 +243,8 @@ export interface ImageText {
  */
 export interface PostsGrid {
   heading?: string | null;
-  intro?: string | null;
   anchorId?: string | null;
+  intro?: string | null;
   limit?: number | null;
   id?: string | null;
   blockName?: string | null;
@@ -321,8 +325,8 @@ export interface FaqSection {
  */
 export interface ServicesGrid {
   heading?: string | null;
-  intro?: string | null;
   anchorId?: string | null;
+  intro?: string | null;
   /**
    * Choose and reorder services for this section. Leave empty to show published services by display order.
    */
@@ -339,6 +343,7 @@ export interface ServicesGrid {
 export interface Service {
   id: string;
   title: string;
+  status: 'draft' | 'published';
   slug: string;
   /**
    * Optional heading used to group services on the Services page.
@@ -367,7 +372,14 @@ export interface Service {
   icon?: string | null;
   featured?: boolean | null;
   displayOrder?: number | null;
-  status: 'draft' | 'published';
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -377,8 +389,8 @@ export interface Service {
  */
 export interface SuperheroesGrid {
   heading?: string | null;
-  intro?: string | null;
   anchorId?: string | null;
+  intro?: string | null;
   limit?: number | null;
   id?: string | null;
   blockName?: string | null;
@@ -432,6 +444,7 @@ export interface User {
 export interface Developer {
   id: string;
   name: string;
+  status: 'draft' | 'published';
   slug: string;
   jobTitle: string;
   photo?: (string | null) | Media;
@@ -454,7 +467,14 @@ export interface Developer {
   services?: (string | Service)[] | null;
   featured?: boolean | null;
   displayOrder?: number | null;
-  status: 'draft' | 'published';
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -465,6 +485,7 @@ export interface Developer {
 export interface Post {
   id: string;
   title: string;
+  status: 'draft' | 'published';
   slug: string;
   /**
    * Short summary displayed on article cards.
@@ -490,7 +511,14 @@ export interface Post {
   category?: ('legal-guides' | 'firm-news' | 'case-updates' | 'legal-insights') | null;
   publishedAt?: string | null;
   featured?: boolean | null;
-  status: 'draft' | 'published';
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -550,8 +578,8 @@ export interface Page {
           }
         | {
             heading?: string | null;
-            intro?: string | null;
             anchorId?: string | null;
+            intro?: string | null;
             limit?: number | null;
             id?: string | null;
             blockName?: string | null;
@@ -620,8 +648,8 @@ export interface Page {
           }
         | {
             heading?: string | null;
-            intro?: string | null;
             anchorId?: string | null;
+            intro?: string | null;
             /**
              * Choose and reorder services for this section. Leave empty to show published services by display order.
              */
@@ -633,8 +661,8 @@ export interface Page {
           }
         | {
             heading?: string | null;
-            intro?: string | null;
             anchorId?: string | null;
+            intro?: string | null;
             limit?: number | null;
             id?: string | null;
             blockName?: string | null;
@@ -652,11 +680,15 @@ export interface Page {
           }
       )[]
     | null;
-  seo?: {
-    metaTitle?: string | null;
-    metaDescription?: string | null;
-  };
   status: 'draft' | 'published';
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
@@ -668,11 +700,11 @@ export interface Page {
 export interface ContactInquiry {
   id: string;
   name: string;
+  status: 'new' | 'in-progress' | 'resolved';
   email: string;
   phone?: string | null;
   subject: string;
   message: string;
-  status: 'new' | 'in-progress' | 'resolved';
   internalNotes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -684,13 +716,13 @@ export interface ContactInquiry {
 export interface ConsultationRequest {
   id: string;
   name: string;
+  status: 'new' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
   email: string;
   phone: string;
   consultationType: 'general' | 'feedback' | 'service-inquiry';
   preferredDate?: string | null;
   preferredTime?: ('morning' | 'afternoon' | 'evening') | null;
   message: string;
-  status: 'new' | 'contacted' | 'scheduled' | 'completed' | 'cancelled';
   internalNotes?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -705,6 +737,220 @@ export interface NewsletterSubscriber {
   status: 'pending' | 'subscribed' | 'unsubscribed';
   subscribedAt?: string | null;
   consent: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms".
+ */
+export interface Form {
+  id: string;
+  title: string;
+  fields?:
+    | (
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            defaultValue?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'checkbox';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'country';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'email';
+          }
+        | {
+            message?: {
+              root: {
+                type: string;
+                children: {
+                  type: any;
+                  version: number;
+                  [k: string]: unknown;
+                }[];
+                direction: ('ltr' | 'rtl') | null;
+                format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                indent: number;
+                version: number;
+              };
+              [k: string]: unknown;
+            } | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'message';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'number';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            placeholder?: string | null;
+            options?:
+              | {
+                  label: string;
+                  value: string;
+                  id?: string | null;
+                }[]
+              | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'select';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'state';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'text';
+          }
+        | {
+            name: string;
+            label?: string | null;
+            width?: number | null;
+            defaultValue?: string | null;
+            required?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'textarea';
+          }
+      )[]
+    | null;
+  submitButtonLabel?: string | null;
+  confirmationType?: ('message' | 'redirect') | null;
+  confirmationMessage?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  redirect?: {
+    url: string;
+  };
+  emails?:
+    | {
+        emailTo?: string | null;
+        cc?: string | null;
+        bcc?: string | null;
+        replyTo?: string | null;
+        emailFrom?: string | null;
+        subject: string;
+        message?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: string;
+  form: string | Form;
+  submissionData?:
+    | {
+        field: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This is a collection of automatically created search results. These results are used by the global site search and will be updated automatically as documents in the CMS are created or updated.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search".
+ */
+export interface Search {
+  id: string;
+  title?: string | null;
+  priority?: number | null;
+  doc:
+    | {
+        relationTo: 'pages';
+        value: string | Page;
+      }
+    | {
+        relationTo: 'services';
+        value: string | Service;
+      }
+    | {
+        relationTo: 'developers';
+        value: string | Developer;
+      }
+    | {
+        relationTo: 'posts';
+        value: string | Post;
+      };
+  excerpt?: string | null;
+  url?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -767,6 +1013,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'newsletter-subscribers';
         value: string | NewsletterSubscriber;
+      } | null)
+    | ({
+        relationTo: 'forms';
+        value: string | Form;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: string | FormSubmission;
+      } | null)
+    | ({
+        relationTo: 'search';
+        value: string | Search;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -883,6 +1141,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface ServicesSelect<T extends boolean = true> {
   title?: T;
+  status?: T;
   slug?: T;
   category?: T;
   shortDescription?: T;
@@ -891,7 +1150,13 @@ export interface ServicesSelect<T extends boolean = true> {
   icon?: T;
   featured?: T;
   displayOrder?: T;
-  status?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -901,6 +1166,7 @@ export interface ServicesSelect<T extends boolean = true> {
  */
 export interface DevelopersSelect<T extends boolean = true> {
   name?: T;
+  status?: T;
   slug?: T;
   jobTitle?: T;
   photo?: T;
@@ -909,7 +1175,13 @@ export interface DevelopersSelect<T extends boolean = true> {
   services?: T;
   featured?: T;
   displayOrder?: T;
-  status?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -919,6 +1191,7 @@ export interface DevelopersSelect<T extends boolean = true> {
  */
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
+  status?: T;
   slug?: T;
   excerpt?: T;
   featuredImage?: T;
@@ -927,7 +1200,13 @@ export interface PostsSelect<T extends boolean = true> {
   category?: T;
   publishedAt?: T;
   featured?: T;
-  status?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -974,8 +1253,8 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
-              intro?: T;
               anchorId?: T;
+              intro?: T;
               limit?: T;
               id?: T;
               blockName?: T;
@@ -1016,8 +1295,8 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
-              intro?: T;
               anchorId?: T;
+              intro?: T;
               services?: T;
               limit?: T;
               id?: T;
@@ -1027,8 +1306,8 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               heading?: T;
-              intro?: T;
               anchorId?: T;
+              intro?: T;
               limit?: T;
               id?: T;
               blockName?: T;
@@ -1045,13 +1324,14 @@ export interface PagesSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
-  seo?:
+  status?: T;
+  meta?:
     | T
     | {
-        metaTitle?: T;
-        metaDescription?: T;
+        title?: T;
+        description?: T;
+        image?: T;
       };
-  status?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -1062,11 +1342,11 @@ export interface PagesSelect<T extends boolean = true> {
  */
 export interface ContactInquiriesSelect<T extends boolean = true> {
   name?: T;
+  status?: T;
   email?: T;
   phone?: T;
   subject?: T;
   message?: T;
-  status?: T;
   internalNotes?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1077,13 +1357,13 @@ export interface ContactInquiriesSelect<T extends boolean = true> {
  */
 export interface ConsultationRequestsSelect<T extends boolean = true> {
   name?: T;
+  status?: T;
   email?: T;
   phone?: T;
   consultationType?: T;
   preferredDate?: T;
   preferredTime?: T;
   message?: T;
-  status?: T;
   internalNotes?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1097,6 +1377,168 @@ export interface NewsletterSubscribersSelect<T extends boolean = true> {
   status?: T;
   subscribedAt?: T;
   consent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "forms_select".
+ */
+export interface FormsSelect<T extends boolean = true> {
+  title?: T;
+  fields?:
+    | T
+    | {
+        checkbox?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              defaultValue?: T;
+              id?: T;
+              blockName?: T;
+            };
+        country?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        email?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        message?:
+          | T
+          | {
+              message?: T;
+              id?: T;
+              blockName?: T;
+            };
+        number?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        select?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              placeholder?: T;
+              options?:
+                | T
+                | {
+                    label?: T;
+                    value?: T;
+                    id?: T;
+                  };
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        state?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        text?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+        textarea?:
+          | T
+          | {
+              name?: T;
+              label?: T;
+              width?: T;
+              defaultValue?: T;
+              required?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  submitButtonLabel?: T;
+  confirmationType?: T;
+  confirmationMessage?: T;
+  redirect?:
+    | T
+    | {
+        url?: T;
+      };
+  emails?:
+    | T
+    | {
+        emailTo?: T;
+        cc?: T;
+        bcc?: T;
+        replyTo?: T;
+        emailFrom?: T;
+        subject?: T;
+        message?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  form?: T;
+  submissionData?:
+    | T
+    | {
+        field?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "search_select".
+ */
+export interface SearchSelect<T extends boolean = true> {
+  title?: T;
+  priority?: T;
+  doc?: T;
+  excerpt?: T;
+  url?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1210,37 +1652,6 @@ export interface FirmSetting {
         id?: string | null;
       }[]
     | null;
-  consultationLabel?: string | null;
-  consultationUrl?: string | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-design".
- */
-export interface SiteDesign {
-  id: string;
-  brandColors: {
-    /**
-     * Primary navy brand color.
-     */
-    primary: string;
-    /**
-     * Secondary gold brand color.
-     */
-    secondary: string;
-    background: string;
-    text: string;
-  };
-  typography?: {
-    headingFont?: string | null;
-    bodyFont?: string | null;
-  };
-  appearance?: {
-    borderRadius?: ('small' | 'medium' | 'large') | null;
-    enableAnimations?: boolean | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1312,37 +1723,6 @@ export interface FirmSettingsSelect<T extends boolean = true> {
         day?: T;
         hours?: T;
         id?: T;
-      };
-  consultationLabel?: T;
-  consultationUrl?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "site-design_select".
- */
-export interface SiteDesignSelect<T extends boolean = true> {
-  brandColors?:
-    | T
-    | {
-        primary?: T;
-        secondary?: T;
-        background?: T;
-        text?: T;
-      };
-  typography?:
-    | T
-    | {
-        headingFont?: T;
-        bodyFont?: T;
-      };
-  appearance?:
-    | T
-    | {
-        borderRadius?: T;
-        enableAnimations?: T;
       };
   updatedAt?: T;
   createdAt?: T;

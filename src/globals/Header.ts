@@ -61,13 +61,14 @@ export const Header: GlobalConfig = {
     {
       name: 'ctaLabel',
       type: 'text',
-      defaultValue: 'Request hero support',
+      defaultValue: 'Contact us',
      
     },
     {
       name: 'ctaUrl',
       type: 'text',
       defaultValue: '/contact',
+      admin: { components: { Field: '@/components/fields/NavigationURLField#NavigationURLField' } },
     },
   ],
 }

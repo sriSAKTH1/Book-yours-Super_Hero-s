@@ -1,5 +1,6 @@
 
 import type { CollectionConfig } from 'payload'
+import { twoColumnRow } from '../lib/twoColumnRow'
 
 export const Developers: CollectionConfig = {
   slug: 'developers',
@@ -8,8 +9,9 @@ export const Developers: CollectionConfig = {
 
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'jobTitle', 'status'],
+    defaultColumns: ['status', 'name', 'jobTitle'],
     group: 'Superhero Content',
+    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
   },
 
   access: {
@@ -32,12 +34,17 @@ export const Developers: CollectionConfig = {
   },
 
   fields: [
-    {
-      name: 'name',
-      type: 'text',
-      required: true,
-      label: 'Hero name',
-    },
+    twoColumnRow(
+      { name: 'name', type: 'text', required: true, label: 'Hero name' },
+      {
+        name: 'status', type: 'select', required: true, defaultValue: 'draft',
+        admin: { hidden: true },
+        options: [
+          { label: 'Draft', value: 'draft' },
+          { label: 'Published', value: 'published' },
+        ],
+      },
+    ),
     {
       name: 'slug',
       type: 'text',
@@ -81,16 +88,6 @@ export const Developers: CollectionConfig = {
       name: 'displayOrder',
       type: 'number',
       defaultValue: 0,
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
     },
   ],
 }

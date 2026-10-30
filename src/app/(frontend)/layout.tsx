@@ -4,9 +4,10 @@ import './styles.css'
 import './ui.css'
 import WebsiteHeader from '@/components/WebsiteHeader'
 import WebsiteFooter from '@/components/WebsiteFooter'
+import { getPublicSiteURL } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3001'),
+  metadataBase: getPublicSiteURL() || undefined,
   title: {
     default: 'Superhero HQ — Help when the city needs it',
     template: '%s | Superhero HQ',

@@ -1,44 +1,15 @@
 import type { Metadata } from 'next'
-import { getPayloadClient } from '@/lib/payload'
 import PageBuilder from '@/components/PageBuilder'
+import { getPublicPageByType, pageMetadata } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        { pageType: { equals: 'about' } },
-        { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-      ],
-    },
-    limit: 1,
-    depth: 2,
-  })
-  const page = result.docs[0]
-
-  return {
-    title: page?.seo?.metaTitle || page?.title || 'About us',
-    description: page?.seo?.metaDescription || page?.heroDescription || 'Learn about Superhero HQ and our community-first approach to hero services.',
-  }
+  return pageMetadata(await getPublicPageByType('about'), '/about', 'About us', 'Learn about Superhero HQ and our community-first approach to hero services.')
 }
 
 export default async function AboutPage() {
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        { pageType: { equals: 'about' } },
-        { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-      ],
-    },
-    limit: 1,
-    depth: 2,
-  })
-  const page = result.docs[0]
+  const page = await getPublicPageByType('about')
 
   if (page?.layout?.length) {
     return <main><PageBuilder blocks={page.layout} /></main>

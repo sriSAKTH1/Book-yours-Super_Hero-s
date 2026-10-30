@@ -2,21 +2,20 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import { getPayloadClient } from '@/lib/payload'
+import type { Metadata } from 'next'
+import { developerMetadata, getPublishedDeveloper } from '@/lib/seo'
 
 export const dynamic = 'force-dynamic'
 type Props = { params: Promise<{ slug: string }> }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  return developerMetadata(await getPublishedDeveloper(slug), `/superheroes/${encodeURIComponent(slug)}`)
+}
+
 export default async function SuperheroProfilePage({ params }: Props) {
   const { slug } = await params
-  const payload = await getPayloadClient()
-  const result = await payload.find({
-    collection: 'developers',
-    where: { and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }] },
-    limit: 1,
-    depth: 2,
-  })
-  const hero = result.docs[0]
+  const hero = await getPublishedDeveloper(slug)
   if (!hero) notFound()
   const photo = hero.photo && typeof hero.photo === 'object' ? hero.photo.url : null
 

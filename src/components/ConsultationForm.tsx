@@ -52,7 +52,7 @@ export default function ConsultationForm() {
       <div className="form-row"><label htmlFor="preferred-date">Preferred date <span>(optional)</span><input className="form-control" id="preferred-date" name="preferredDate" type="date" /></label><label htmlFor="preferred-time">Preferred time <span>(optional)</span><select className="form-control" id="preferred-time" name="preferredTime" defaultValue=""><option value="">Any time</option><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option></select></label></div>
       <label htmlFor="consultation-message">Tell us what support is needed<textarea className="form-control" id="consultation-message" name="message" rows={4} maxLength={5000} required /></label>
       {feedback && <p className={success ? 'form-notice' : 'form-error'} role="status" aria-live="polite">{feedback}</p>}
-      <button className="button button-dark" type="submit" disabled={loading}>{loading ? 'Sending…' : 'Request hero support'} <span aria-hidden="true">↗</span></button>
+      <button className="button button-dark" type="submit" disabled={loading}>{loading ? 'Sending…' : 'Contact us'} <span aria-hidden="true">↗</span></button>
     </form>
   )
 }

@@ -1,24 +1,18 @@
-import { getPayloadClient } from '@/lib/payload'
 import PageBuilder from '@/components/PageBuilder'
+
 import Link from 'next/link'
+import { getPublicPageByType, pageMetadata } from '@/lib/seo'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
 
-export default async function HomePage() {
-  const payload = await getPayloadClient()
-  const homePage = await payload.find({
-    collection: 'pages',
-    where: {
-      and: [
-        { pageType: { equals: 'home' } },
-        { or: [{ _status: { equals: 'published' } }, { status: { equals: 'published' } }] },
-      ],
-    },
-    limit: 1,
-    depth: 2,
-  })
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPublicPageByType('home')
+  return pageMetadata(page, '/', 'Superhero HQ — Help when the city needs it', 'Meet the heroes protecting our city and explore rescue, protection, and recovery services.')
+}
 
-  const page = homePage.docs[0]
+export default async function HomePage() {
+  const page = await getPublicPageByType('home')
 
   if (page?.layout?.length) {
     return <main><PageBuilder blocks={page.layout} /></main>
@@ -41,6 +35,7 @@ export default async function HomePage() {
           <article className="content-card"><p className="eyebrow eyebrow-dark">02 / Protect</p><h2>Put people first.</h2><p>Our heroes work alongside the community with care, courage, and respect.</p></article>
           <article className="content-card"><p className="eyebrow eyebrow-dark">03 / Rebuild</p><h2>Stay for the recovery.</h2><p>Find practical support to help neighbors recover and move forward together.</p></article>
         </section>
+       
       </section>
     </main>
   )
