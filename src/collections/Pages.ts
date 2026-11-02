@@ -15,6 +15,40 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['_status', 'title', 'slug', 'updatedAt'],
+    livePreview: {
+      url: ({ data }) => {
+        const routes: Record<string, string> = {
+          home: '/',
+          about: '/about',
+          services: '/services',
+          superheroes: '/superheroes',
+          insights: '/insights',
+          contact: '/contact',
+        }
+
+        return routes[data?.pageType] || '/'
+      },
+      breakpoints: [
+        {
+          label: 'Mobile',
+          name: 'mobile',
+          width: 375,
+          height: 812,
+        },
+        {
+          label: 'Tablet',
+          name: 'tablet',
+          width: 768,
+          height: 1024,
+        },
+        {
+          label: 'Desktop',
+          name: 'desktop',
+          width: 1440,
+          height: 900,
+        },
+      ],
+    },
     ///group: 'Superhero Content',
   },
 

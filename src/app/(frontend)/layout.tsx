@@ -4,6 +4,7 @@ import './styles.css'
 import './ui.css'
 import WebsiteHeader from '@/components/WebsiteHeader'
 import WebsiteFooter from '@/components/WebsiteFooter'
+import LivePreviewRefresh from '@/components/RefreshRouteOnSave'
 import { getPublicSiteURL } from '@/lib/seo'
 
 export const metadata: Metadata = {
@@ -28,6 +29,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body>
+        <LivePreviewRefresh />
         <WebsiteHeader />
         {children}
         <WebsiteFooter />

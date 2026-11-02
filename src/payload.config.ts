@@ -181,6 +181,45 @@ export default buildConfig({
     user: Users.slug,
     // Lets each CMS user choose System, Light, or Dark from their profile.
     theme: 'all',
+    livePreview: {
+      collections: ['pages'],
+      url: ({ data }) => {
+        const pageType = data?.pageType
+
+        const routes: Record<string, string> = {
+          home: '/',
+          about: '/about',
+          services: '/services',
+          superheroes: '/superheroes',
+          insights: '/insights',
+          contact: '/contact',
+        }
+
+        const path = routes[pageType] || '/'
+
+        return `${process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'}${path}`
+      },
+      breakpoints: [
+        {
+          label: 'Mobile',
+          name: 'mobile',
+          width: 375,
+          height: 812,
+        },
+        {
+          label: 'Tablet',
+          name: 'tablet',
+          width: 768,
+          height: 1024,
+        },
+        {
+          label: 'Desktop',
+          name: 'desktop',
+          width: 1440,
+          height: 900,
+        },
+      ],
+    },
     meta: {
       titleSuffix: '- Superhero HQ Admin',
       icons: {
