@@ -1,5 +1,5 @@
 
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, Where } from 'payload'
 import { twoColumnRow } from '../lib/twoColumnRow'
 
 export const Developers: CollectionConfig = {
@@ -11,7 +11,17 @@ export const Developers: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['status', 'name', 'jobTitle'],
     group: 'Superhero Content',
-    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
+  },
+
+  versions: { drafts: true },
+
+  hooks: {
+    beforeChange: [({ data }) => {
+      if (data._status === 'draft' || data._status === 'published') {
+        return { ...data, status: data._status }
+      }
+      return data
+    }],
   },
 
   access: {
@@ -20,11 +30,13 @@ export const Developers: CollectionConfig = {
         return true
       }
 
-      return {
-        status: {
-          equals: 'published',
-        },
+      const publishedSuperheroes: Where = {
+        or: [
+          { _status: { equals: 'published' } },
+          { status: { equals: 'published' } },
+        ],
       }
+      return publishedSuperheroes
     },
     create: ({ req }) =>
       req.user?.role === 'admin' || req.user?.role === 'editor',

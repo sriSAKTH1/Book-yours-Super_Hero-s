@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import FormBuilderTest from '@/components/FormBuilderTest'
+import ContactForm from '@/components/ContactForm'
 import PageBuilder from '@/components/PageBuilder'
 import { getPayloadClient } from '@/lib/payload'
 import { getPublicPageBySlug, pageMetadata } from '@/lib/seo'
@@ -18,7 +19,7 @@ export default async function ContactPage() {
     getPublicPageBySlug('contact'),
     payload.find({
       collection: 'forms',
-      where: { title: { equals: 'Contact Us Test' } },
+      where: { title: { equals: 'Website Contact Form' } },
       limit: 1,
       depth: 0,
     }).catch((error) => {
@@ -39,13 +40,13 @@ export default async function ContactPage() {
           {settings.primaryPhone && settings.primaryPhone.replace(/\D/g, '') !== '9876543210' && <a className="contact-detail" href={`tel:${settings.primaryPhone}`}>{settings.primaryPhone}</a>}
           {settings.officeAddress && <p className="contact-address">{settings.officeAddress}</p>}
         </div>
-        <section className="contact-card">
+        <section className="contact-card" id="contact-form">
           <h2>Send us a message</h2>
           <p className="contact-card-copy">Required fields are marked with an asterisk.</p>
           {contactForm ? (
             <FormBuilderTest form={contactForm} />
           ) : (
-            <p role="alert" className="form-error">The contact form is unavailable right now. Please try again later.</p>
+            <ContactForm />
           )}
         </section>
       </section>

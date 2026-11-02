@@ -26,8 +26,7 @@ export default function ContactForm() {
     }
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'
-      const response = await fetch(`${apiUrl}/contact-inquiries`, {
+      const response = await fetch('/api/form-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

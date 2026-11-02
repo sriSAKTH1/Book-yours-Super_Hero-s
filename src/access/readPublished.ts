@@ -1,5 +1,12 @@
 
-import type { Access } from 'payload'
+import type { Access, Where } from 'payload'
+
+const publishedContent: Where = {
+  or: [
+    { _status: { equals: 'published' } },
+    { status: { equals: 'published' } },
+  ],
+}
 
 export const readPublished: Access = ({ req }) => {
   // Only content editors can preview drafts.
@@ -8,9 +15,5 @@ export const readPublished: Access = ({ req }) => {
   }
 
   // Public visitors can read published content only.
-  return {
-    status: {
-      equals: 'published',
-    },
-  }
+  return publishedContent
 }

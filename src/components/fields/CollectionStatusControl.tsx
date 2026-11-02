@@ -26,18 +26,27 @@ export function CollectionStatusControl() {
   if (!options.length) return null
 
   return (
-    <label className="collection-status-control">
-      <span>Status <span aria-hidden="true">*</span></span>
-      <select
-        value={value ?? ''}
-        onChange={(event) => setValue(event.target.value)}
-        disabled={disabled}
-        aria-label="Status"
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>{option.label ?? option.value}</option>
-        ))}
-      </select>
-    </label>
+    <div className="collection-status-control">
+      <span className="collection-status-label">Status</span>
+      <div className="collection-status-options" role="group" aria-label="Status">
+        {options.map((option) => {
+          const optionValue = String(option.value)
+          const selected = String(value ?? '') === optionValue
+
+          return (
+            <button
+              className={`collection-status-option${selected ? ' is-selected' : ''}`}
+              key={optionValue}
+              type="button"
+              aria-pressed={selected}
+              disabled={disabled}
+              onClick={() => setValue(optionValue)}
+            >
+              {option.label ?? optionValue}
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }

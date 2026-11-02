@@ -179,7 +179,8 @@ const databaseUrl = await resolveDatabaseUrl()
 export default buildConfig({
   admin: {
     user: Users.slug,
-    theme: 'light',
+    // Lets each CMS user choose System, Light, or Dark from their profile.
+    theme: 'all',
     meta: {
       titleSuffix: '- Superhero HQ Admin',
       icons: {
@@ -187,11 +188,19 @@ export default buildConfig({
       },
     },
     components: {
+      providers: ['@/components/admin/AppearanceProvider#AppearanceProvider'],
       graphics: {
         Logo: '/components/admin/graphics/Logo',
         Icon: '/components/admin/graphics/Icon',
       },
-      beforeLogin: ['@/components/admin/SuperheroLoginBrand#SuperheroLoginBrand'],
+      beforeLogin: [
+        '@/components/admin/SuperheroLoginBrand#SuperheroLoginBrand',
+      ],
+      views: {
+        dashboard: {
+          Component: '/components/admin/dashboard/Dashboard#Dashboard',
+        },
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),

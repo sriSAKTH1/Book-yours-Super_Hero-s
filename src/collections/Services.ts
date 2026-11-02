@@ -10,7 +10,17 @@ export const Services: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['status', 'title', 'updatedAt'],
     group: 'Superhero Content',
-    components: { edit: { beforeDocumentControls: ['@/components/fields/CollectionStatusControl#CollectionStatusControl'] } },
+  },
+
+  versions: { drafts: true },
+
+  hooks: {
+    beforeChange: [({ data }) => {
+      if (data._status === 'draft' || data._status === 'published') {
+        return { ...data, status: data._status }
+      }
+      return data
+    }],
   },
 
   access: {

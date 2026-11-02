@@ -382,6 +382,7 @@ export interface Service {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -417,6 +418,10 @@ export interface CallToAction {
 export interface User {
   id: string;
   role: 'admin' | 'editor';
+  /**
+   * Choose the text size used throughout the CMS admin panel.
+   */
+  appearanceFontSize?: ('small' | 'medium' | 'large') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -477,6 +482,7 @@ export interface Developer {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -521,6 +527,7 @@ export interface Post {
   };
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1074,6 +1081,7 @@ export interface PayloadMigration {
  */
 export interface UsersSelect<T extends boolean = true> {
   role?: T;
+  appearanceFontSize?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -1159,6 +1167,7 @@ export interface ServicesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1184,6 +1193,7 @@ export interface DevelopersSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1209,6 +1219,7 @@ export interface PostsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

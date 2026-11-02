@@ -40,7 +40,7 @@ export default function FormBuilderTest({ form }: { form: Form }) {
 
     try {
       const valuesByName = Object.fromEntries(submissionData.map(({ field, value }) => [field, value]))
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000'}/contact-inquiries`, {
+      const response = await fetch('/api/form-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

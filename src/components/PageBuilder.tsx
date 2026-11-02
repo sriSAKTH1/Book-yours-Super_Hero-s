@@ -117,29 +117,13 @@ async function PageBlockView({ block }: { block: PageBlock }) {
     }
 
     services = services.filter((service) => service.status === 'published')
-    const groups = services.reduce<Record<string, Service[]>>((all, service) => {
-      const category = service.category?.trim() || 'More ways we help'
-      all[category] ??= []
-      all[category].push(service)
-      return all
-    }, {})
-    const serviceGroups = Object.entries(groups).sort(([a], [b]) => {
-      if (a === 'Technology & Innovation') return -1
-      if (b === 'Technology & Innovation') return 1
-      return a.localeCompare(b)
-    })
     return (
       <section className="section builder-grid-section" id={block.anchorId || undefined}>
         <div className="section-heading"><div><h2>{block.heading || 'Our services'}</h2>{block.intro && <p>{block.intro}</p>}</div><Link className="text-link" href="/services">All services ↗</Link></div>
-        <div className="service-groups">{serviceGroups.map(([category, groupedServices]) => (
-          <section className="service-group" key={category}>
-            {category !== 'More ways we help' && <h3>{category}</h3>}
-            <div className="service-grid">{groupedServices.map((service, index) => {
-              const presentation = servicePresentation(service)
-              return <Link className="service-card" href={`/services/${service.slug}`} key={service.id}><span className="card-number">0{index + 1}</span><div className="service-icon" aria-hidden="true">↗</div><h3>{presentation.title}</h3><p>{presentation.shortDescription}</p><span className="card-arrow" aria-hidden="true">↗</span></Link>
-            })}</div>
-          </section>
-        ))}</div>
+        <div className="service-grid">{services.map((service, index) => {
+          const presentation = servicePresentation(service)
+          return <Link className="service-card" href={`/services/${service.slug}`} key={service.id}><span className="card-number">{String(index + 1).padStart(2, '0')}</span><div className="service-icon" aria-hidden="true">↗</div><h3>{presentation.title}</h3><p>{presentation.shortDescription}</p><span className="card-arrow" aria-hidden="true">↗</span></Link>
+        })}</div>
       </section>
     )
   }

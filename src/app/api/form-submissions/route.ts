@@ -42,24 +42,43 @@ export async function POST(request: Request) {
 
     const payload = await getPayloadClient()
 
+    const forms = await payload.find({
+      collection: 'forms',
+      where: { title: { equals: 'Website Contact Form' } },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    const form = forms.docs[0]
+
+    if (!form) {
+      return NextResponse.json(
+        { message: 'The contact form is not configured yet. Please try again later.' },
+        { status: 503 },
+      )
+    }
+
     await payload.create({
-      collection: 'contact-inquiries',
+      collection: 'form-submissions',
       data: {
-        name,
-        email,
-        phone,
-        subject,
-        message,
+        form: form.id,
+        submissionData: [
+          { field: 'name', value: name },
+          { field: 'email', value: email },
+          { field: 'phone', value: phone },
+          { field: 'subject', value: subject },
+          { field: 'message', value: message },
+        ],
       },
-      overrideAccess: false,
+      overrideAccess: true,
     })
 
     return NextResponse.json(
-      { message: 'Your inquiry has been submitted successfully.' },
+      { message: 'Your message has been submitted successfully.' },
       { status: 201 },
     )
   } catch (error) {
-    console.error('Contact inquiry submission failed:', error)
+    console.error('Contact form submission failed:', error)
 
     return NextResponse.json(
       { message: 'We could not submit your inquiry. Please try again later.' },

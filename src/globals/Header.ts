@@ -34,10 +34,10 @@ export const Header: GlobalConfig = {
       label: 'Navigation Links',
       defaultValue: [
         { label: 'Home', url: '/' },
+        { label: 'About', url: '/about' },
         { label: 'Services', url: '/services' },
         { label: 'Superheroes', url: '/superheroes' },
         { label: 'Insights', url: '/insights' },
-        { label: 'About', url: '/about' },
         { label: 'Contact', url: '/contact' },
       ],
       fields: [
@@ -67,7 +67,7 @@ export const Header: GlobalConfig = {
     {
       name: 'ctaUrl',
       type: 'text',
-      defaultValue: '/contact',
+      defaultValue: '/contact#contact-form',
       admin: { components: { Field: '@/components/fields/NavigationURLField#NavigationURLField' } },
     },
   ],

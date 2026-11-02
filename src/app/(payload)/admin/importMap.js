@@ -26,13 +26,15 @@ import { MetaTitleComponent as MetaTitleComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
-import { CollectionStatusControl as CollectionStatusControl_0a6eb2af4b2849d43cc5f845e48a24c9 } from '@/components/fields/CollectionStatusControl'
 import { NavigationURLField as NavigationURLField_d78a919ab9d82d883b7734925bfc327f } from '@/components/fields/NavigationURLField'
+import { CollectionStatusControl as CollectionStatusControl_0a6eb2af4b2849d43cc5f845e48a24c9 } from '@/components/fields/CollectionStatusControl'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { default as default_8c7579001d094aae258586b09a2f4a85 } from '../../../components/admin/graphics/Icon'
 import { default as default_da4f7e8a6c72793056168c73c78f997f } from '../../../components/admin/graphics/Logo'
 import { SuperheroLoginBrand as SuperheroLoginBrand_71d4a49e6363ac70318724746c1ae780 } from '@/components/admin/SuperheroLoginBrand'
+import { AppearanceProvider as AppearanceProvider_16724f9983339e475ecce0472ad3d104 } from '@/components/admin/AppearanceProvider'
+import { Dashboard as Dashboard_af669912e06d01f0ca1b5c3178684fc9 } from '../../../components/admin/dashboard/Dashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -65,12 +67,14 @@ export const importMap = {
   "@payloadcms/plugin-seo/client#MetaDescriptionComponent": MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#MetaImageComponent": MetaImageComponent_a8a977ebc872c5d5ea7ee689724c0860,
   "@payloadcms/plugin-seo/client#PreviewComponent": PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
-  "@/components/fields/CollectionStatusControl#CollectionStatusControl": CollectionStatusControl_0a6eb2af4b2849d43cc5f845e48a24c9,
   "@/components/fields/NavigationURLField#NavigationURLField": NavigationURLField_d78a919ab9d82d883b7734925bfc327f,
+  "@/components/fields/CollectionStatusControl#CollectionStatusControl": CollectionStatusControl_0a6eb2af4b2849d43cc5f845e48a24c9,
   "@payloadcms/plugin-search/client#LinkToDoc": LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   "@payloadcms/plugin-search/client#ReindexButton": ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   "/components/admin/graphics/Icon#default": default_8c7579001d094aae258586b09a2f4a85,
   "/components/admin/graphics/Logo#default": default_da4f7e8a6c72793056168c73c78f997f,
   "@/components/admin/SuperheroLoginBrand#SuperheroLoginBrand": SuperheroLoginBrand_71d4a49e6363ac70318724746c1ae780,
+  "@/components/admin/AppearanceProvider#AppearanceProvider": AppearanceProvider_16724f9983339e475ecce0472ad3d104,
+  "/components/admin/dashboard/Dashboard#Dashboard": Dashboard_af669912e06d01f0ca1b5c3178684fc9,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
